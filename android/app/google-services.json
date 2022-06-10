@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "688473093006",
+    "project_id": "cemilpokemon-a0ad8",
+    "storage_bucket": "cemilpokemon-a0ad8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688473093006:android:1ba5a6a5b307cbbf0aeadf",
+        "android_client_info": {
+          "package_name": "com.cemilpokemon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688473093006-bhpd0a05k68qsnm1t29bv89jdc2f4m8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cemilpokemon",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "688473093006-lf47b69d4mceovci8oore18fkvaolo51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4EKGfDTqo5DPixcJ01j6c7BdejF2PtQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688473093006-lf47b69d4mceovci8oore18fkvaolo51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
