@@ -20,9 +20,12 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import database from '@react-native-firebase/database';
+import {useDispatch} from 'react-redux';
+import {setUser} from '../../store/globalAction';
 LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
+  const dispatch = useDispatch();
   useEffect(() => {
     GoogleSignin.configure();
   }, []);
@@ -45,6 +48,14 @@ export default function Index({navigation}) {
               });
           }
         });
+      dispatch(
+        setUser({
+          _id: userInfo.user.id,
+          name: userInfo.user.name,
+          email: userInfo.user.email,
+          photo: userInfo.user.photo,
+        }),
+      );
       console.log(userInfo);
       navigation.navigate('Home');
     } catch (error) {
