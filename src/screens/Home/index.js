@@ -15,7 +15,7 @@ import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {getPokemon} from './redux/action';
 import {BASE_URL} from '../../helpers/apiAccess';
 
-export default function Index() {
+export default function Index({navigation}) {
   const {user} = useSelector(state => state.global);
   const {pokemon} = useSelector(state => state.pokemon);
   const [endpoint, setEndpoint] = useState(`${BASE_URL}/pokemon/?limit=20`);
@@ -26,7 +26,7 @@ export default function Index() {
     dispatch(getPokemon(endpoint));
     console.log(pokemon, 'pokemon');
   }, [endpoint]);
-  console.log(user);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -52,7 +52,8 @@ export default function Index() {
               marginVertical: ms(9),
               width: ms(160),
               borderRadius: ms(5),
-            }}>
+            }}
+            onPress={() => navigation.navigate('Detail', {url: item.url})}>
             <Comfortaa style={{color: colors.primaryDark}}>
               {item.name}
             </Comfortaa>

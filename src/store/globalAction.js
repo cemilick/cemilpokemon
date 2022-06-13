@@ -11,3 +11,10 @@ export const setUser = payload => {
     payload: payload,
   };
 };
+
+export const setPokemonUser = payload => {
+  return {
+    type: 'SET_POKEMON_USER',
+    payload: payload,
+  };
+};

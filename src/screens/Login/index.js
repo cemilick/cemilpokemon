@@ -21,7 +21,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import database from '@react-native-firebase/database';
 import {useDispatch} from 'react-redux';
-import {setUser} from '../../store/globalAction';
+import {setPokemonUser, setUser} from '../../store/globalAction';
 LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
@@ -46,16 +46,14 @@ export default function Index({navigation}) {
                 email: userInfo.user.email,
                 photo: userInfo.user.photo,
               });
+          } else {
+            database()
+              .ref('users/' + userInfo.user.id)
+              .on('value', data => {
+                dispatch(setUser(data.val()));
+              });
           }
         });
-      dispatch(
-        setUser({
-          _id: userInfo.user.id,
-          name: userInfo.user.name,
-          email: userInfo.user.email,
-          photo: userInfo.user.photo,
-        }),
-      );
       console.log(userInfo);
       navigation.navigate('Home');
     } catch (error) {

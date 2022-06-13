@@ -1,6 +1,8 @@
 const initialState = {
   loading: false,
   user: {},
+  pokemonUser: {},
+  catched: false,
 };
 
 export const globalReducer = (state = initialState, action) => {
@@ -14,6 +16,11 @@ export const globalReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case 'SET_POKEMON_USER':
+      return {
+        ...state,
+        pokemon: action.payload,
       };
     default:
       return state;
