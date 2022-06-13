@@ -8,6 +8,7 @@ import {
   Animated,
   Easing,
   DrawerLayoutAndroidBase,
+  BackHandler,
 } from 'react-native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {getDetailPokemon} from './redux/action';
@@ -24,7 +25,7 @@ import database from '@react-native-firebase/database';
 import {setPokemonUser} from '../../store/globalAction';
 import {BASE_URL} from '../../helpers/apiAccess';
 
-export default function Index({route}) {
+export default function Index({navigation, route}) {
   const dispatch = useDispatch();
   const {detailPokemon} = useSelector(state => state.detailPokemon);
   const {user} = useSelector(state => state.global);
@@ -49,53 +50,6 @@ export default function Index({route}) {
     }
     return false;
   };
-
-  useMemo(() => {
-    if (pokemon) setCatched(search(detailPokemon?.name, pokemon));
-    console.log(catched, 'catched');
-  }, [detailPokemon]);
-
-  const catchButton = useCallback(() => {
-    if (!catched)
-      return (
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'coral',
-            padding: ms(10),
-            borderRadius: ms(5),
-            marginTop: ms(10),
-          }}
-          onPress={() => {
-            setModalVisible(true);
-            Animated.timing(leftValue, {
-              toValue: 0,
-              duration: 10000,
-              useNativeDriver: true,
-            }).start(() => {
-              setModalVisible(false);
-              Animated.timing(leftValue).reset();
-              setModalVisible2(true);
-              setSuccess(catchPokemon(detailPokemon));
-            });
-            console.log(leftValue);
-          }}>
-          <Comfortaa type="Bold">Coba Tangkap Pokemon</Comfortaa>
-        </TouchableOpacity>
-      );
-    else
-      return (
-        <Comfortaa
-          type="Bold"
-          style={{
-            backgroundColor: 'green',
-            padding: ms(10),
-            borderRadius: ms(5),
-            marginTop: ms(10),
-          }}>
-          Pokemon Sudah Dimiliki
-        </Comfortaa>
-      );
-  }, [catched]);
 
   const catchPokemon = detailPokemon => {
     const result = (((Math.random() * 100) % rarity) + 1).toFixed(0);
@@ -160,9 +114,64 @@ export default function Index({route}) {
     } else return false;
   };
 
+  const catchButton = useCallback(() => {
+    if (!catched)
+      return (
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'coral',
+            padding: ms(10),
+            borderRadius: ms(5),
+            marginTop: ms(10),
+          }}
+          onPress={() => {
+            setModalVisible(true);
+            Animated.timing(leftValue, {
+              toValue: 0,
+              duration: 10000,
+              useNativeDriver: true,
+            }).start(() => {
+              setModalVisible(false);
+              Animated.timing(leftValue).reset();
+              setModalVisible2(true);
+              setSuccess(catchPokemon(detailPokemon));
+            });
+            console.log(leftValue);
+          }}>
+          <Comfortaa type="Bold">Coba Tangkap Pokemon</Comfortaa>
+        </TouchableOpacity>
+      );
+    else
+      return (
+        <Comfortaa
+          type="Bold"
+          style={{
+            backgroundColor: 'green',
+            padding: ms(10),
+            borderRadius: ms(5),
+            marginTop: ms(10),
+          }}>
+          Pokemon Sudah Dimiliki
+        </Comfortaa>
+      );
+  }, [catched]);
+
   useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.goBack();
+      BackHandler.addEventListener('hardwareBackPress', () => {
+        BackHandler.exitApp();
+        return true;
+      });
+      return true;
+    });
     dispatch(getDetailPokemon(route.params.url));
   }, []);
+
+  useMemo(() => {
+    if (pokemon) setCatched(search(detailPokemon?.name, pokemon));
+    console.log(catched, 'catched');
+  }, [detailPokemon]);
 
   return (
     <View
@@ -170,6 +179,24 @@ export default function Index({route}) {
         backgroundColor: colors.primaryDark,
         height: heightPercentageToDP('100%'),
       }}>
+      <View
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          top: ms(10),
+          left: ms(10),
+        }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: colors.primary,
+            paddingHorizontal: ms(20),
+            paddingVertical: ms(10),
+            borderRadius: ms(5),
+          }}
+          onPress={() => navigation.goBack()}>
+          <Comfortaa>Kembali</Comfortaa>
+        </TouchableOpacity>
+      </View>
       <Modal
         animationType="fade"
         transparent={true}

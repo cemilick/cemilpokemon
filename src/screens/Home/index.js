@@ -5,6 +5,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  BackHandler,
 } from 'react-native';
 import Comfortaa from '../../components/Comfortaa';
 import React, {useEffect, useMemo, useState} from 'react';
@@ -14,6 +15,9 @@ import {colors} from '../../res/colors';
 import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import {getPokemon} from './redux/action';
 import {BASE_URL} from '../../helpers/apiAccess';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {setUser} from '../../store/globalAction';
+import Guest from '../../assets/images/guest.png';
 
 export default function Index({navigation}) {
   const {user} = useSelector(state => state.global);
@@ -21,17 +25,29 @@ export default function Index({navigation}) {
   const [endpoint, setEndpoint] = useState(`${BASE_URL}/pokemon/?limit=20`);
   // const [pokemon, setPokemon] = useState({});
   const dispatch = useDispatch();
-
+  const logout = async () => {
+    await GoogleSignin.signOut();
+    dispatch(setUser(null));
+    navigation.navigate('Login');
+  };
+  function handleBackButtonClick() {
+    BackHandler.exitApp();
+    return true;
+  }
   useMemo(() => {
     dispatch(getPokemon(endpoint));
     console.log(pokemon, 'pokemon');
   }, [endpoint]);
 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{uri: user.photo}}
+          source={user?.photo ? {uri: user?.photo} : Guest}
           style={styles.profile}
           resizeMode="contain"
         />
@@ -56,7 +72,8 @@ export default function Index({navigation}) {
               backgroundColor: 'red',
               marginRight: ms(5),
               borderRadius: ms(5),
-            }}>
+            }}
+            onPress={logout}>
             <Comfortaa>Logout</Comfortaa>
           </TouchableOpacity>
         </View>

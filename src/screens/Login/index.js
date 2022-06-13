@@ -20,14 +20,16 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import database from '@react-native-firebase/database';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setPokemonUser, setUser} from '../../store/globalAction';
 LogBox.ignoreAllLogs();
 
 export default function Index({navigation}) {
   const dispatch = useDispatch();
+  const {user} = useSelector(state => state.global);
   useEffect(() => {
     GoogleSignin.configure();
+    if (user) navigation.navigate('Home');
   }, []);
   const signIn = async () => {
     try {
