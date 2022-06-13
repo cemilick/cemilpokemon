@@ -46,13 +46,12 @@ export default function Index({navigation}) {
                 email: userInfo.user.email,
                 photo: userInfo.user.photo,
               });
-          } else {
-            database()
-              .ref('users/' + userInfo.user.id)
-              .on('value', data => {
-                dispatch(setUser(data.val()));
-              });
           }
+          database()
+            .ref('users/' + userInfo.user.id)
+            .on('value', data => {
+              dispatch(setUser(data.val()));
+            });
         });
       console.log(userInfo);
       navigation.navigate('Home');

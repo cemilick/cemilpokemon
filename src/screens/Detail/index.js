@@ -21,6 +21,8 @@ import {
 } from 'react-native-responsive-screen';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import database from '@react-native-firebase/database';
+import {setPokemonUser} from '../../store/globalAction';
+import {BASE_URL} from '../../helpers/apiAccess';
 
 export default function Index({route}) {
   const dispatch = useDispatch();
@@ -101,6 +103,7 @@ export default function Index({route}) {
     console.log(result == rarity);
 
     if (result == rarity) {
+      setCatched(true);
       if (pokemon) {
         database()
           .ref('users/' + user._id)
@@ -113,6 +116,7 @@ export default function Index({route}) {
                 photo:
                   detailPokemon?.sprites?.other['official-artwork']
                     ?.front_default,
+                url: BASE_URL + '/pokemon/' + detailPokemon.id,
               },
             ],
           });
@@ -123,6 +127,7 @@ export default function Index({route}) {
             name: detailPokemon.name,
             photo:
               detailPokemon?.sprites?.other['official-artwork']?.front_default,
+            url: BASE_URL + '/pokemon/' + detailPokemon.id,
           },
         ]);
       } else {
@@ -136,6 +141,7 @@ export default function Index({route}) {
                 photo:
                   detailPokemon?.sprites?.other['official-artwork']
                     ?.front_default,
+                url: BASE_URL + '/pokemon/' + detailPokemon.id,
               },
             ],
           });
@@ -145,6 +151,7 @@ export default function Index({route}) {
             name: detailPokemon.name,
             photo:
               detailPokemon?.sprites?.other['official-artwork']?.front_default,
+            url: BASE_URL + '/pokemon/' + detailPokemon.id,
           },
         ]);
       }

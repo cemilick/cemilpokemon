@@ -35,8 +35,30 @@ export default function Index({navigation}) {
           style={styles.profile}
           resizeMode="contain"
         />
-        <View>
-          <Comfortaa style={{color: colors.primaryDark}}>Logout</Comfortaa>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: ms(130),
+          }}>
+          <TouchableOpacity
+            style={{
+              padding: ms(8),
+              backgroundColor: 'green',
+              borderRadius: ms(5),
+            }}
+            onPress={() => navigation.navigate('Bag')}>
+            <Comfortaa>My Bag</Comfortaa>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              padding: ms(8),
+              backgroundColor: 'red',
+              marginRight: ms(5),
+              borderRadius: ms(5),
+            }}>
+            <Comfortaa>Logout</Comfortaa>
+          </TouchableOpacity>
         </View>
       </View>
       <FlatList

@@ -1,8 +1,7 @@
 const initialState = {
   loading: false,
   user: {},
-  pokemonUser: {},
-  catched: false,
+  pokemonUser: [],
 };
 
 export const globalReducer = (state = initialState, action) => {
